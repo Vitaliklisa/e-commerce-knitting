@@ -231,12 +231,27 @@ export default function NewKnittyForm() {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <Label>Description</Label>
+                  <Label
+                  onClick={() => setFocus("description")}
+                  >Description</Label>
                   <FormControl>
                     <RichTextEditor
                       onChange={(draft) => draftToMarkdown(draft)}
                       ref={field.ref}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="salary"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Salary</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="number"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
