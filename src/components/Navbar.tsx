@@ -12,7 +12,7 @@ export default function Navbar() {
           <span className="text-xl font-bold tracking-tight">Knitty Nata</span>
         </Link>
         <Button asChild>
-          <Link href="/knitty/new">Post a item</Link>
+          <Link href="/knitty/new">Post a product</Link>
         </Button>
       </nav>
     </header>

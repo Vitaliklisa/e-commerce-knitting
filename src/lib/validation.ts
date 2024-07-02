@@ -6,9 +6,10 @@ const numericRequiredString = requiredString.regex(/^\d+$/, "Must be a number");
 
 const companyLogoSchema = z
   .custom<File | undefined>()
-  .refine((file) => {
-    !file || (file instanceof File && file.type.startsWith("image/"))
-  }, "Must be an image file")
+  .refine(
+    (file) => !file || (file instanceof File && file.type.startsWith("image/")),
+    "Must be an image file",
+  )
   /// 2 megabytes
   .refine((file) => {
     return !file || file.size < 1024 * 1024 * 2;
@@ -17,27 +18,29 @@ const companyLogoSchema = z
 const applicationSchema = z
   .object({
     applicationEmail: z.string().max(100).email().optional().or(z.literal("")),
-    applicationUrl: z.string().max(100).email().optional().or(z.literal("")),
+    applicationUrl: z.string().max(100).url().optional().or(z.literal("")),
   })
   .refine((data) => data.applicationEmail || data.applicationUrl, {
     message: "Email or Url is required",
     path: ["applicationEmail"],
-  })
+  });
 
-  const locationSchema = z.object({
+const locationSchema = z
+  .object({
     locationType: requiredString.refine(
-        value => locationTypes.includes(value),
-        "Invalid location type"
+      (value) => locationTypes.includes(value),
+      "Invalid location type",
     ),
-    location: z.string().max(100).optional()
+    location: z.string().max(100).optional(),
   })
   .refine(
-    data => !data.locationType || data.locationType === "Remote" ||data.location,
-{
-    message: "Location is required for on-site jobs",
-    path: ["location"]
-}
-  )
+    (data) =>
+      !data.locationType || data.locationType === "Remote" || data.location,
+    {
+      message: "Location is required for on-site jobs",
+      path: ["location"],
+    },
+  );
 /// below description make for other stuff such as size.
 export const createJobsSchema = z
   .object({
@@ -56,7 +59,7 @@ export const createJobsSchema = z
   })
   .and(applicationSchema)
   .and(locationSchema);
-  
+
 export type CreateJobsValues = z.infer<typeof createJobsSchema>;
 
 export const jobFilterSchema = z.object({

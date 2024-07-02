@@ -1,5 +1,5 @@
 "use client";
-
+/// Company logo need to be fixed don't want to take a png, jpeg format or not work at all :(
 import {
   Form,
   FormControl,
@@ -20,6 +20,8 @@ import { X } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import RichTextEditor from "@/components/RichTextEditor";
 import { draftToMarkdown } from "markdown-draft-js";
+import LoadingButton from "@/components/LoadingButton";
+import { createJobPosting } from "./actions";
 
 export default function NewKnittyForm() {
   const form = useForm<CreateJobsValues>({
@@ -37,7 +39,19 @@ export default function NewKnittyForm() {
   } = form;
 
   async function onSubmit(values: CreateJobsValues) {
-    alert(JSON.stringify(values, null, 2));
+    const formData = new FormData();
+
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) {
+        formData.append(key, value);
+      }
+    })
+
+    try {
+      await createJobPosting(formData);
+    } catch (error) {
+      alert("Something went wrong please try again.")
+    }
   }
 
   return (
@@ -50,9 +64,9 @@ export default function NewKnittyForm() {
       </div>
       <div className="space-y-6 rounded-lg border p-4">
         <div>
-          <h2 className="font-semibold"> Item details</h2>
+          <h2 className="font-semibold"> Product details</h2>
           <p className="text-muted-foreground">
-            Provide a item description and details.
+            Provide a product description and details.
           </p>
         </div>
         <Form {...form}>
@@ -66,7 +80,7 @@ export default function NewKnittyForm() {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Item title</FormLabel>
+                  <FormLabel>Title</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g Socks, Stockings" {...field} />
                   </FormControl>
@@ -137,7 +151,16 @@ export default function NewKnittyForm() {
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Select {...field} defaultValue="">
+                    <Select
+                      {...field}
+                      defaultValue=""
+                      onChange={(e) => {
+                        field.onChange(e);
+                        if ((e.currentTarget.value = "Remote")) {
+                          trigger("location");
+                        }
+                      }}
+                    >
                       <option value="" hidden>
                         Select a option
                       </option>
@@ -231,12 +254,14 @@ export default function NewKnittyForm() {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <Label
-                  onClick={() => setFocus("description")}
-                  >Description</Label>
+                  <Label onClick={() => setFocus("description")}>
+                    Description
+                  </Label>
                   <FormControl>
                     <RichTextEditor
-                      onChange={(draft) => draftToMarkdown(draft)}
+                      onChange={(draft) =>
+                        field.onChange(draftToMarkdown(draft))
+                      }
                       ref={field.ref}
                     />
                   </FormControl>
@@ -251,12 +276,15 @@ export default function NewKnittyForm() {
                 <FormItem>
                   <FormLabel>Salary</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number"/>
+                    <Input {...field} type="number" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            <LoadingButton type="submit" loading={isSubmitting}>
+              Submit
+            </LoadingButton>
           </form>
         </Form>
       </div>
