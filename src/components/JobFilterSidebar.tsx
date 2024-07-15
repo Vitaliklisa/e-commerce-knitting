@@ -95,7 +95,7 @@ export default async function JobFilterSidebar({
             />
             <Label htmlFor="remote">Remote Jobs</Label>
           </div>
-          <FormSubmitButton className="w-full">Filter jobs</FormSubmitButton>
+          <FormSubmitButton className="w-full bg-violet-500 hover:bg-violet-400">Filter jobs</FormSubmitButton>
         </div>
       </form>
     </aside>

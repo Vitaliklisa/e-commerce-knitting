@@ -11,7 +11,7 @@ export default function Navbar() {
           <Image src={ava} width={40} height={40} alt="Knitty logo" />
           <span className="text-xl font-bold tracking-tight">Knitty Nata</span>
         </Link>
-        <Button asChild>
+        <Button asChild className="bg-violet-500 hover:bg-violet-400">
           <Link href="/knitty/new">Post a product</Link>
         </Button>
       </nav>

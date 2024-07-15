@@ -10,6 +10,7 @@ interface PageProps {
     type?: string;
     location?: string;
     remote?: string;
+    page?: string,
   };
 }
 /// Change get title to knitted clothes or by categories such as sweetier, socks, camoflage e.t.c
@@ -27,8 +28,8 @@ function getTitle({ q, type, location, remote }: JobFilterValues) {
   return `${titlePrefix}${titleSuffix}`;
 }
 
-export function generateMetadate({
-  searchParams: { q, type, location, remote },
+export function generateMetadata({
+  searchParams: { q, type, location, remote},
 }: PageProps): Metadata {
   return {
     title: `${getTitle({ q, type, location, remote: remote === "true" })} | Knitty Nata`
@@ -36,7 +37,7 @@ export function generateMetadate({
 }
 
 export default async function Home({
-  searchParams: { q, type, location, remote },
+  searchParams: { q, type, location, remote, page },
 }: PageProps) {
   const filterValues: JobFilterValues = {
     q,
@@ -54,7 +55,8 @@ export default async function Home({
       </div>
       <section className="flex flex-col gap-4 md:flex-row">
         <JobFilterSidebar defaultValues={filterValues} />
-        <JobResults filterValues={filterValues} />
+        <JobResults filterValues={filterValues}
+        page={page ? parseInt(page) : undefined} />
       </section>
     </main>
   );

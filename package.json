@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@clerk/nextjs": "^5.1.6",
+    "@clerk/nextjs": "^4.29.1",
     "@hookform/resolvers": "^3.6.0",
     "@prisma/client": "^5.16.0",
     "@radix-ui/react-label": "^2.1.0",
@@ -19,6 +20,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "eslint": "^8.0.0",
     "lucide-react": "^0.397.0",
     "markdown-draft-js": "^2.4.0",
     "nanoid": "^5.0.7",
@@ -39,7 +41,6 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-draft-wysiwyg": "^1.13.8",
-    "eslint": "^9",
     "eslint-config-next": "14.2.4",
     "eslint-config-prettier": "^9.1.0",
     "postcss": "^8",
